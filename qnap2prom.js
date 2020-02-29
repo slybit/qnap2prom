@@ -4,8 +4,15 @@ const express = require('express');
 const client = require('prom-client');
 const register = client.register;
 const { createLogger, format, transports } = require('winston');
-const config = require('./config.js').parse();
 const { exec } = require("child_process");
+
+const config = {
+    prometheus: {
+        port: 5000,
+        path: 'metrics'
+    }
+}
+
 
 // disks
 const disks = ["sda", "sdb", "sdc", "sdd"];
@@ -45,7 +52,7 @@ const updateMetrics = function() {
                 console.log(`stderr: ${stderr}`);
                 return;
             } else {
-                if (stdout === "standby") {
+                if (stdout.includes("standby")) {
                     m.labels('id', disk).set(0);
                 } else {
                     m.labels('id', disk).set(0);
@@ -57,15 +64,6 @@ const updateMetrics = function() {
 
 updateMetrics();
 setInterval(updateMetrics, 60000);
-
-
-
-
-
-
-
-
-
 
 
 
