@@ -53,9 +53,9 @@ const updateMetrics = function() {
                 return;
             } else {
                 if (stdout.includes("standby")) {
-                    m.labels('id', disk).set(0);
+                    m.labels(disk).set(0);
                 } else {
-                    m.labels('id', disk).set(0);
+                    m.labels(disk).set(1);
                 }
             }
         }); 
